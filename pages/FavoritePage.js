@@ -1,18 +1,13 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import DynamicNav from '../navigator/DynamicNav';
-import NavigationUtil from '../navigator/NavigationUtil';
-
-class HomePage extends React.Component {
-  static navigationOptions = {
-    title: 'home',
-  };
-
+class FavoritePage extends React.Component {
   render () {
     const {navigation} = this.props;
-    NavigationUtil.navigation = navigation;
-
-    return <DynamicNav />;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>FavoritePage</Text>
+      </View>
+    );
   }
 }
 
@@ -29,4 +24,4 @@ const styles = StyleSheet.create ({
   },
 });
 
-export default HomePage;
+export default FavoritePage;
