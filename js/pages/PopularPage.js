@@ -3,8 +3,6 @@ import {View, Text, StyleSheet} from 'react-native';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createAppContainer} from 'react-navigation';
 
-// createMaterialTopTabNavigator
-// createAppContainer
 class PopularPage extends React.Component {
   constructor (props) {
     super (props);

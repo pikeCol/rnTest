@@ -8,6 +8,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator, BottomTabBar} from 'react-navigation-tabs';
 import {createAppContainer} from 'react-navigation';
+import {connect} from 'react-redux';
+
 const TABS = {
   PopularPage: {
     screen: PopularPage,
@@ -51,22 +53,30 @@ const TABS = {
   },
 };
 
+@connect (state => ({
+  theme: state.theme.theme,
+}))
 export default class DynamicNav extends React.Component {
   constructor (props) {
     super (props);
     console.disableYellowBox = true; // 关闭警告
   }
   _tabNavigator () {
+    if (this._Tabs) {
+      return this._Tabs;
+    }
     // 动态路由
     const {PopularPage, FavoritePage, MyPage, TrendingPage} = TABS;
     const tabs = {PopularPage, TrendingPage, FavoritePage, MyPage};
     // 动态修改
     // PopularPage.navigationOptions.tabBarLabel = 'redfadsf';
-    return createAppContainer (
+    return (this._Tabs = createAppContainer (
       createBottomTabNavigator (tabs, {
-        tabBarComponent: TabBarComp,
+        tabBarComponent: props => (
+          <TabBarComp {...props} theme={this.props.theme} />
+        ),
       })
-    );
+    ));
   }
   render () {
     const Tabs = this._tabNavigator ();
@@ -83,19 +93,14 @@ class TabBarComp extends React.Component {
     };
   }
   render () {
-    const {routes, index} = this.props.navigation.state;
-    if (routes[index].params) {
-      const {theme} = routes[index].params;
-      if (theme && theme.updateTime > this.theme.updateTime) {
-        this.theme = theme;
-      }
-    }
+    // const {routes, index} = this.props.navigation.state;
+    // if (routes[index].params) {
+    //   const {theme} = routes[index].params;
+    //   if (theme && theme.updateTime > this.theme.updateTime) {
+    //     this.theme = theme;
+    //   }
+    // }
 
-    return (
-      <BottomTabBar
-        {...this.props}
-        activeTintColor={this.theme.tintColor || this.props.activeTintColor}
-      />
-    );
+    return <BottomTabBar {...this.props} activeTintColor={this.props.theme} />;
   }
 }
